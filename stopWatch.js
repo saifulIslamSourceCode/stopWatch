@@ -14,94 +14,115 @@ let msSmall = document.getElementById('ms-small');
 let ms = 0, sec = 0, min = 0, hour = 0;
 let timer; //for setInterval()
 
-		/*--------------------------functions---------------------*/
+/*--------------------------functions---------------------*/
 
-		//current time
-		function currentTimeFn() {
-			let currentTime = new Date();
-			currentTimespan.innerText = currentTime.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true});
-		}
-		setInterval(currentTimeFn, 1000);
-
-
-
-		//setInterval() for stopwatch
-		function setIntervalfn() {
-			if (!timer) {
-				timer = setInterval(start, 10);
-			}
-		}
+//current time
+function currentTimeFn() {
+	let currentTime = new Date();
+	currentTimespan.innerText = currentTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+}
+setInterval(currentTimeFn, 1000);
 
 
-		//add text in  Container
-		function innerContent(){
-			msSmall.innerText = ms < 10 ? '0'+ms : ms;
-			secSpan.innerText = sec < 10 ? '0'+sec : sec;
-			minSpan.innerText = min < 10 ? '0'+min : min;
-			hourSpan.innerText = hour < 10 ? '0'+hour : hour;
-		}
+
+//setInterval() for stopwatch
+function setIntervalfn() {
+	if (!timer) {
+		timer = setInterval(start, 10);
+	}
+}
 
 
-				//start stopwatch
-		function start() {
-			ms++;
-			innerContent();
-
-			if (ms == 100) {
-				sec++;
-				ms = 0;
-				innerContent();
-			}
-			if (sec == 60) {
-				min++;
-				sec = 0;
-				innerContent();
-			}
-			if (min == 60) {
-				hour++;
-				min = 0;
-				innerContent();
-			}
-		}
+//add text in  Container
+function innerContent() {
+	msSmall.innerText = ms < 10 ? '0' + ms : ms;
+	secSpan.innerText = sec < 10 ? '0' + sec : sec;
+	minSpan.innerText = min < 10 ? '0' + min : min;
+	hourSpan.innerText = hour < 10 ? '0' + hour : hour;
+}
 
 
-				//stop function
-		function stop() {
-			clearInterval(timer);
-			timer = false;
-		}
+//start stopwatch
+function start() {
+	ms++;
+	innerContent();
 
-		function split() {
-			addRecord.innerHTML = `
+	if (ms == 100) {
+		sec++;
+		ms = 0;
+		innerContent();
+	}
+	if (sec == 60) {
+		min++;
+		sec = 0;
+		innerContent();
+	}
+	if (min == 60) {
+		hour++;
+		min = 0;
+		innerContent();
+	}
+}
+
+
+//stop function
+function stop() {
+	clearInterval(timer);
+	timer = false;
+}
+
+function split() {
+	addRecord.innerHTML = `
 			Recorded Time - 
-			<span>${hour < 10 ? '0'+hour : hour}:</span>
-			<span>${min < 10 ? '0'+min : min}:</span>
-			<span>${sec < 10 ? '0'+sec : sec}:</span>
-			<span>${ms < 10 ? '0'+ms : ms}</span>
+			<span>${hour < 10 ? '0' + hour : hour}:</span>
+			<span>${min < 10 ? '0' + min : min}:</span>
+			<span>${sec < 10 ? '0' + sec : sec}:</span>
+			<span>${ms < 10 ? '0' + ms : ms}</span>
 			`
-		}
+}
 
-		function reset() {
-			ms = 0, sec = 0, min = 0, hour = 0;
-			addRecord.innerHTML = '';
-			innerContent();
-			stop();
-		}
+function reset() {
+	ms = 0, sec = 0, min = 0, hour = 0;
+	addRecord.innerHTML = '';
+	innerContent();
+	stop();
+}
 
 /*-------------------------------evebts---------------------*/
-		//click to start 
-		startBtn.addEventListener('click', () => {
-			setIntervalfn();
-		});
+//click to start 
+startBtn.addEventListener('click', () => {
+	setIntervalfn();
+});
 
-		pauseBtn.addEventListener('click', () => {
-			stop();
-		});
-		
-		splitBtn.addEventListener('click', () => {
-			split();
-		});
+pauseBtn.addEventListener('click', () => {
+	stop();
+});
 
-		resetBtn.addEventListener('click', () => {
-			reset();
-		});
+splitBtn.addEventListener('click', () => {
+	split();
+});
+
+resetBtn.addEventListener('click', () => {
+	reset();
+});
+
+
+// Dark mode toggle
+const toggle = document.getElementById('dark-toggle');
+const body = document.body;
+
+// Load preference
+if (localStorage.getItem('darkMode') === 'enabled') {
+	body.classList.add('dark-mode');
+	toggle.checked = true;
+}
+
+toggle.addEventListener('change', () => {
+	if (toggle.checked) {
+		body.classList.add('dark-mode');	
+		localStorage.setItem('darkMode', 'enabled');
+	} else {
+		body.classList.remove('dark-mode');
+		localStorage.setItem('darkMode', 'disabled');
+	}
+});
